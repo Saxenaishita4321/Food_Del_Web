@@ -39,6 +39,8 @@ app.use(cors({
 //dp connection
 connectDB();
 
+app.use('/images', express.static('uploads'));
+
 //api endpoints
 app.use("/api/food",foodRouter)
 app.use("/images",express.static('uploads'))
