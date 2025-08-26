@@ -1,14 +1,13 @@
-import express from "express"
-import cors from "cors"
-import { connectDB } from "./config/db.js"
-import foodRouter from "./routes/foodRoutes.js"
-import userRouter from "./routes/userRotes.js"
-import 'dotenv/config'
-import cartRouter from "./routes/cartRouter.js"
-import orderRouter from "./routes/orderRoute.js"
+import express from "express";
+import cors from "cors";
+import { connectDB } from "./config/db.js";
+import foodRouter from "./routes/foodRoutes.js";
+import userRouter from "./routes/userRotes.js";
+import 'dotenv/config';
+import cartRouter from "./routes/cartRouter.js";
+import orderRouter from "./routes/orderRoute.js";
 
-
-const app = express()
+const app = express();
 const port = process.env.PORT || 4000;
 
 const allowedOrigins = [
@@ -18,15 +17,23 @@ const allowedOrigins = [
   "http://localhost:5174"
 ];
 
+// ✅ Middleware
+app.use(express.json());
 
-
-//middleware
-app.use(express.json())
+// ✅ Proper CORS setup
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
-
 
 
 //dp connection
