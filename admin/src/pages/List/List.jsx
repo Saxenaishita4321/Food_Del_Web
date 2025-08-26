@@ -21,16 +21,21 @@ const List = ({url}) => {
       toast.error("Error fetching food items.");
     }
   };
-  const removeFood = async(foodId)=>{
-    const response = await axios.post(`${url}/api/food/remove`,{id:foodId});
-    await fetchList();
-    if(response.data.success){
-      toast.success(response.data.message)
+  const removeFood = async (foodId) => {
+  try {
+    const response = await axios.post(`${url}/api/food/remove`, { id: foodId });
+    if (response.data.success) {
+      toast.success(response.data.message);
+      fetchList();
+    } else {
+      toast.error(response.data.message || "Failed to remove food item.");
     }
-    else{
-      toast.error("Error");
-    }
+  } catch (error) {
+    console.error("Error removing food item:", error);
+    toast.error("Something went wrong while removing food.");
   }
+};
+
 
   useEffect(() => {
     fetchList();

@@ -21,29 +21,33 @@ const onChangeHandler=(event)=>{
   setData(data=>({...data,[name]:value}))
 }
 
-const onSubmitHandler=async(event)=>{
- event.preventDefault();
- const formData = new FormData();
- formData.append("name",data.name)
- formData.append("description",data.description)
- formData.append("price",Number(data.price))
- formData.append("category",data.category)
- formData.append("image",image)
- const response = await axios.post(`${url}/api/food/add`,formData)
- if(response.data.success){
-   setData({
-    name:"",
-    description:"",
-    price:"",
-    category:"Salad"
-   })
-   setImage(false)
-   toast.success(response.data.message)
- }
- else{
-  toast.error(response.message)
- }
-}
+const onSubmitHandler = async (event) => {
+  event.preventDefault();
+  try {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("price", Number(data.price));
+    formData.append("category", data.category);
+    formData.append("image", image);
+
+    const response = await axios.post(`${url}/api/food/add`, formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    });
+
+    if (response.data.success) {
+      setData({ name: "", description: "", price: "", category: "Salad" });
+      setImage(false);
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message || "Failed to add food item.");
+    }
+  } catch (error) {
+    console.error("Error adding food item:", error);
+    toast.error("Something went wrong while adding food.");
+  }
+};
+
 
 
   return (
@@ -80,7 +84,7 @@ const onSubmitHandler=async(event)=>{
             </div>
             <div className="add-price flex-col">
                 <p>Product price</p>
-                <input onChange={onChangeHandler} vlaue={data.price} type="Number" name='price' placeholder='$20' />
+                <input onChange={onChangeHandler} value={data.price} type="Number" name='price' placeholder='$20' />
             </div>
         </div>
         <button type='submit' className='add-btn'>ADD</button>
