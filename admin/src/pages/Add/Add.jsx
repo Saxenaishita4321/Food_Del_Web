@@ -31,10 +31,9 @@ const onSubmitHandler = async (event) => {
     formData.append("category", data.category);
     formData.append("image", image);
 
-    const response = await axios.post(`${url}/api/food/add`, formData, {
-      headers: { "Content-Type": "multipart/form-data" }
-    });
-
+    const response = axios.post(`${url}/api/food/add`, formData, {
+  headers: { "Content-Type": "multipart/form-data" }
+});
     if (response.data.success) {
       setData({ name: "", description: "", price: "", category: "Salad" });
       setImage(false);
