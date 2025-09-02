@@ -52,18 +52,20 @@ const List = ({url}) => {
             <b>Price</b>
             <b>Action</b>
         </div>
-        {list.map((item,index)=>{
-          return(
-            <div key={index} className="list-table-format">
-              <img src={`${url}/images/`+item.image} alt="" />
-              <p>{item.name}</p>
-              <p>{item.category}</p>
-              <p>${item.price}</p>
-              <p onClick={()=>removeFood(item._id)} className='cursor'>X</p>
-            </div>
+        {list && list.length > 0 ? (
+  list.map((item,index)=>(
+    <div key={index} className="list-table-format">
+      <img src={`${url}/images/`+item.image} alt="" />
+      <p>{item.name}</p>
+      <p>{item.category}</p>
+      <p>${item.price}</p>
+      <p onClick={()=>removeFood(item._id)} className='cursor'>X</p>
+    </div>
+  ))
+) : (
+  <p>No items found</p>
+)}
 
-          )
-        })}
        </div>
      </div>
   );

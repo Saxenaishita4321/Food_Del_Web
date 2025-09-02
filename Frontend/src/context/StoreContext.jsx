@@ -5,6 +5,7 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
    const [cartItems, setCartItems] = useState({});
+
    // const url = "http://localhost:4000";
       const url = import.meta.env.VITE_API_URL; 
    const [token, setToken] = useState("");
@@ -71,10 +72,11 @@ const StoreContextProvider = (props) => {
     }
   
     const orderData = {
-      items: Object.keys(cartItems).map((id) => ({
-        product: id,
-        quantity: cartItems[id],
-      })),
+      items: cartItems ? Object.keys(cartItems).map((id) => ({
+      product: id,
+      quantity: cartItems[id],
+    })) : [],
+
       amount: getTotalCartAmount(),
       address,
       paymentMethod: "COD",
